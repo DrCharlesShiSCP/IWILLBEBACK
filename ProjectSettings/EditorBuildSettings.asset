@@ -5,7 +5,11 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Overfort Games/First Person Controller - Advanced/Scenes/Showcase.unity
     guid: 216febfb59804d440b3de21d4675064b
+  - enabled: 1
+    path: Assets/Overfort Games/First Person Controller - Advanced/Scenes/TestingStage.unity
+    guid: a20cb669f8e316a41b57ef9a6661bc5a
   m_configObjects: {}
+  m_UseUCBPForAssetBundles: 0
