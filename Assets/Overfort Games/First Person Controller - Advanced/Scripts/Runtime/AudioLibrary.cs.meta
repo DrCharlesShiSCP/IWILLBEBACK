@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: a08bd8d1be6427d4487047be9336b95c
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 214892
+  packageName: First Person Movement Controller - Advanced
+  packageVersion: 1.2.0
+  assetPath: Assets/Overfort Games/First Person Controller - Advanced/Scripts/Runtime/AudioLibrary.cs
+  uploadId: 657923

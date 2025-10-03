@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 724b5eda1933f97438239dad7556dd35
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: -103
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 214892
+  packageName: First Person Movement Controller - Advanced
+  packageVersion: 1.2.0
+  assetPath: Assets/Overfort Games/First Person Controller - Advanced/Scripts/Runtime/CharacterInput.cs
+  uploadId: 657923

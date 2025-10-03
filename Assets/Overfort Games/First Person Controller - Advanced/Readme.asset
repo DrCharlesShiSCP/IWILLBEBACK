@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcf7219bab7fe46a1ad266029b2fee19, type: 3}
+  m_Name: Readme
+  m_EditorClassIdentifier: 
+  icon: {fileID: 2800000, guid: eddb1bd3927f3f844a4cff9305237e9d, type: 3}
+  title: First Person Controller - Advanced
+  sections:
+  - heading: Quick Installation Guide
+    text: Before importing the package, make sure to backup the project and your
+      Input Manager for safety. Be aware that the Input Manager will be overridden.
+      In order to back up your Input Manager settings, make sure to create a copy
+      of "InputManager.asset" inside the ProjectSettings folder. You can replace
+      the "InputManager.asset" file with your copy once the package is installed
+      to restore your input settings.
+    linkText: 
+    url: 
+  - heading: 
+    text: 'import "First Person Controller - Advanced" package inside your Unity
+      project '
+    linkText: 
+    url: 
+  - heading: 
+    text: 'Go to "Scenes" folder and open Showcase.unity '
+    linkText: 
+    url: 
+  - heading: 
+    text: '<W-A-S-D> keys for moving <Left shift> for running <C> for crouch - slide
+      <Z> for prone <Right mouse click> for zooming <Mouse wheel click> for grappling
+      <Space bar> for jumping/climbing/ wall jumping '
+    linkText: 
+    url: 
+  - heading: 
+    text: '"Advanced Controller" is the character game object ''FirstPersonController''
+      and ''CharacterController'' are the main script for tuning the character movement
+      Special features like grappling, crouching, zooming etc... can be turned off
+      inside ''FirstPersonController'' script in the inspector Camera settings can
+      be tuned inside ''CameraController'' inside "CameraControls" under "CameraRoot"
+      in the hierarchy '
+    linkText: 
+    url: 
+  - heading: 
+    text: If you have any questions or issues, feel free to contact us at overfort.games@gmail.com
+    linkText: 
+    url: 
+  - heading: 
+    text: 
+    linkText: ONLINE DOCUMENTATION
+    url: https://sites.google.com/view/fpc-advanced-doc
+  loadedLayout: 1

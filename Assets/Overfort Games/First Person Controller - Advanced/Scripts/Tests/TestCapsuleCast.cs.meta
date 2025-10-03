@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: fc49c27c9b5f4cf41b8f38fdd5690d2f
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 214892
+  packageName: First Person Movement Controller - Advanced
+  packageVersion: 1.2.0
+  assetPath: Assets/Overfort Games/First Person Controller - Advanced/Scripts/Tests/TestCapsuleCast.cs
+  uploadId: 657923

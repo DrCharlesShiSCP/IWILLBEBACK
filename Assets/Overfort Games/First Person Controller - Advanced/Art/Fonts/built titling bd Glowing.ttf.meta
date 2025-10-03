@@ -1,0 +1,30 @@
+fileFormatVersion: 2
+guid: d3e2f49e650a3d441b948fe4f15e28e0
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Built Titling
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: f57d64c738b74bb4590bc2df92b742a8, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 214892
+  packageName: First Person Movement Controller - Advanced
+  packageVersion: 1.2.0
+  assetPath: Assets/Overfort Games/First Person Controller - Advanced/Art/Fonts/built
+    titling bd Glowing.ttf
+  uploadId: 657923

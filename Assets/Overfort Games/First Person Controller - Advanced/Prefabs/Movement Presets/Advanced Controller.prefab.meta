@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 6c7a39b34a233a64594b69ce748a81ad
+timeCreated: 1547563665
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 214892
+  packageName: First Person Movement Controller - Advanced
+  packageVersion: 1.2.0
+  assetPath: Assets/Overfort Games/First Person Controller - Advanced/Prefabs/Movement
+    Presets/Advanced Controller.prefab
+  uploadId: 657923

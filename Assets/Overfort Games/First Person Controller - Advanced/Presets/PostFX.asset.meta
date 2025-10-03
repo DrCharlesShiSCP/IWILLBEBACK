@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: bf2c35be60ed9354eaa659861a54145b
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 214892
+  packageName: First Person Movement Controller - Advanced
+  packageVersion: 1.2.0
+  assetPath: Assets/Overfort Games/First Person Controller - Advanced/Presets/PostFX.asset
+  uploadId: 657923

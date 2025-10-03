@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 104563c0d71480d46a8158bc9cc4a12f
+TextScriptImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 214892
+  packageName: First Person Movement Controller - Advanced
+  packageVersion: 1.2.0
+  assetPath: Assets/Overfort Games/First Person Controller - Advanced/Settings/HDRP/README
+    - HDRP Conversion.txt
+  uploadId: 657923

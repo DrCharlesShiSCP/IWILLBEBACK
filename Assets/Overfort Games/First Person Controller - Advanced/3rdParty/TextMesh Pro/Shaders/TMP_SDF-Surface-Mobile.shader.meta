@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 85187c2149c549c5b33f0cdb02836b17
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 214892
+  packageName: First Person Movement Controller - Advanced
+  packageVersion: 1.2.0
+  assetPath: Assets/Overfort Games/First Person Controller - Advanced/3rdParty/TextMesh
+    Pro/Shaders/TMP_SDF-Surface-Mobile.shader
+  uploadId: 657923

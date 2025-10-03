@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 74d96a405e7a9d54fb88c82423f95628
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 214892
+  packageName: First Person Movement Controller - Advanced
+  packageVersion: 1.2.0
+  assetPath: Assets/Overfort Games/First Person Controller - Advanced/Prefabs/HUD
+    Canvas.prefab
+  uploadId: 657923

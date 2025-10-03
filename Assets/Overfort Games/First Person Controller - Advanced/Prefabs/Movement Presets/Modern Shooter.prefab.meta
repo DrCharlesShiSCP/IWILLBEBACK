@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 4a471d61bd6f2944bad5c2e59f6afba5
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 214892
+  packageName: First Person Movement Controller - Advanced
+  packageVersion: 1.2.0
+  assetPath: Assets/Overfort Games/First Person Controller - Advanced/Prefabs/Movement
+    Presets/Modern Shooter.prefab
+  uploadId: 657923
