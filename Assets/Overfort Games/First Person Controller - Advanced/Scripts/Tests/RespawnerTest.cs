@@ -6,16 +6,19 @@ namespace OverfortGames.FirstPersonController.Test
 {
     public class RespawnerTest : MonoBehaviour
     {
-        [SerializeField]
-        private Transform spawnPoint;
-
         private void OnTriggerEnter(Collider other)
         {
-            if (other.TryGetComponent<FirstPersonController>(out var controller))
+            // Check if the object entering has a PlayerHealth component
+            if (other.TryGetComponent<PlayerHealth>(out var health))
             {
-                controller.Teleport(spawnPoint.position);
+                // Set player health to zero
+                health.currentHealth = 0;
+
+                // Optionally, if your PlayerHealth has a method to handle death:
+                // health.TakeDamage(health.maxHealth);
+                // or
+                // health.Die();
             }
         }
     }
-
 }

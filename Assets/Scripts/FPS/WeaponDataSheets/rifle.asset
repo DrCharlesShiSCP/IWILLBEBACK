@@ -24,10 +24,10 @@ MonoBehaviour:
   reloadTime: 1.8
   muzzleFlashPrefab: {fileID: 6217782407791316051, guid: 77f6841b30a26604b96573f44d573171,
     type: 3}
-  impactVfxPrefab: {fileID: 0}
+  impactVfxPrefab: {fileID: 100006, guid: 9e95c7b2183a4f345aaf86846f8f1918, type: 3}
   shotSfx: {fileID: 8300000, guid: 00f9617d531b47541bf69b14c14899e7, type: 3}
-  reloadSfx: {fileID: 8300000, guid: 34b32a43ae9c3014da1a3f06f74d3822, type: 3}
-  dryFireSfx: {fileID: 0}
+  reloadSfx: {fileID: 8300000, guid: 54af6e5ba046755498a9a9ea9d92bccb, type: 3}
+  dryFireSfx: {fileID: 8300000, guid: 994780edf31550f4eb661af4c97ab544, type: 3}
   hitMask:
     serializedVersion: 2
     m_Bits: 4294967295

@@ -12,7 +12,7 @@ namespace OverfortGames.FirstPersonController
 
         private void Awake()
         {
-            controller = FindObjectOfType<FirstPersonController>();
+            controller = FindAnyObjectByType<FirstPersonController>();
         }
 
         private void LateUpdate()

@@ -46,7 +46,7 @@ namespace OverfortGames.FirstPersonController
 
         private void Awake()
         {
-            cameraController = FindObjectOfType<CameraController>();
+            cameraController = FindAnyObjectByType<CameraController>();
 
             StartCoroutine(Co_UpdateUnscaled());
         }
