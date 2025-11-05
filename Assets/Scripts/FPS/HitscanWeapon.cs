@@ -63,7 +63,7 @@ public class HitscanWeapon : MonoBehaviour
         nextFireTime = Time.time + (1f / Mathf.Max(0.01f, data.fireRate));
         AmmoInMag--;
 
-        //degrees -> small random cone
+        //degrees small random cone
         float spread = IsADS ? data.spreadADS : data.spreadHip;
         Vector2 offset = Random.insideUnitCircle * spread;
         Quaternion spreadRot = Quaternion.Euler(offset.y, offset.x, 0f);
