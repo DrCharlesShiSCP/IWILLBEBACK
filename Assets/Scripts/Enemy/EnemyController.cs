@@ -1,8 +1,9 @@
 // EnemyController.cs
 using UnityEngine;
+using UnityEngine.AI;
 
 [RequireComponent(typeof(Collider))]
-public class EnemyController : MonoBehaviour
+public class EnemyController : MonoBehaviour, IDamageable
 {
     [SerializeField] private EnemyData data;
 
@@ -11,19 +12,31 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private Transform firePoint; // where bullets spawn; fallback = transform
 
     private Transform _player;
-    private float _shootCooldown;
+    private Vector3 _spawnPos;
+    private Quaternion _spawnRot;
+    private float _maxHealth;
     private float _currentHealth;
+    private float _shootCooldown;
+    private Rigidbody _rb;
+    private NavMeshAgent _agent;
 
     void Awake()
     {
-        _currentHealth = data != null ? data.maxHealth : 10f;
-        if (firePoint == null) firePoint = transform;
+        _spawnPos = transform.position;
+        _spawnRot = transform.rotation;
+
+        _maxHealth = (data != null) ? data.maxHealth : 10f;
+        _currentHealth = _maxHealth;
+
+        if (!firePoint) firePoint = transform;
+        _rb = GetComponent<Rigidbody>();
+        _agent = GetComponent<NavMeshAgent>();
     }
 
     void Start()
     {
-        GameObject p = GameObject.FindGameObjectWithTag(playerTag);
-        if (p != null) _player = p.transform;
+        var p = GameObject.FindGameObjectWithTag(playerTag);
+        if (p) _player = p.transform;
     }
 
     void Update()
@@ -52,7 +65,7 @@ public class EnemyController : MonoBehaviour
                 ShootAt(targetPos); // use collider center, not root
                 _shootCooldown = 1f / Mathf.Max(0.01f, data.shotsPerSecond);
 #if UNITY_EDITOR
-                Debug.Log($"Enemy shooting at {Time.time}");
+                Debug.Log($"[EnemyController] Shoot @ {Time.time:0.00}");
 #endif
             }
         }
@@ -71,6 +84,7 @@ public class EnemyController : MonoBehaviour
 
     private void ShootAt(Vector3 targetPos)
     {
+        // Spawn projectile
         GameObject projGo = Instantiate(data.projectilePrefab, firePoint.position, Quaternion.identity);
 
         // Ignore self-collision so we don't immediately hit our own colliders
@@ -81,21 +95,51 @@ public class EnemyController : MonoBehaviour
             foreach (var c in myCols) Physics.IgnoreCollision(projCol, c, true);
         }
 
+        // Orient and init projectile
         Vector3 dir = (targetPos - firePoint.position).normalized;
         projGo.transform.rotation = Quaternion.LookRotation(dir, Vector3.up);
 
         if (projGo.TryGetComponent<Projectile>(out var proj))
         {
-            float dmg = data.projectileDamage;
-            if (Balance.Instance) dmg *= Balance.Instance.enemyDamageMultiplier; // ¡û add this
-            proj.Init(dir, data.projectileSpeed, dmg, gameObject);
+            // Your Projectile.cs exposes: Init(Vector3 direction, float speed, float damage, GameObject owner)
+            proj.Init(dir, data.projectileSpeed, data.projectileDamage, gameObject);
         }
 
-
-        if (data.shootSfx) AudioSource.PlayClipAtPoint(data.shootSfx, firePoint.position);
+        // Audio (optional)
+        if (data.shootSfx)
+            AudioSource.PlayClipAtPoint(data.shootSfx, firePoint.position);
     }
 
-    // Optional if you later want enemies to take damage
+    public void ResetToSpawn()
+    {
+        gameObject.SetActive(true);
+
+        // transform reset
+        transform.SetPositionAndRotation(_spawnPos, _spawnRot);
+
+        // physics reset
+        if (_rb)
+        {
+#if UNITY_6000_0_OR_NEWER || UNITY_2023_3_OR_NEWER
+            _rb.linearVelocity = Vector3.zero;
+            _rb.angularVelocity = Vector3.zero;
+#else
+            _rb.velocity = Vector3.zero;
+            _rb.angularVelocity = Vector3.zero;
+#endif
+        }
+        if (_agent)
+        {
+            _agent.Warp(_spawnPos);
+            _agent.ResetPath();
+        }
+
+        // combat state reset
+        _currentHealth = _maxHealth;
+        _shootCooldown = 0f;
+        enabled = true;
+    }
+
     public void TakeDamage(float dmg)
     {
         _currentHealth -= dmg;
@@ -104,7 +148,8 @@ public class EnemyController : MonoBehaviour
 
     private void Die()
     {
-        Destroy(gameObject);
+        // disable (not destroy) so EnemyResetManager can bring it back
+        gameObject.SetActive(false);
     }
 
 #if UNITY_EDITOR

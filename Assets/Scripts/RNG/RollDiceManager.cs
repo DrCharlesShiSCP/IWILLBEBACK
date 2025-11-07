@@ -24,6 +24,8 @@ public class RollDiceManager : MonoBehaviour
 
     public event Action OnAbilityChosen;
 
+    private readonly HashSet<Ability> _unlocked = new HashSet<Ability>();
+
     public enum Ability
     {
         // Movement (non-stackable)
@@ -32,7 +34,7 @@ public class RollDiceManager : MonoBehaviour
         // Stackable buffs (can be picked repeatedly)
         PowerSurge_DamageUp,        // +20% player damage (stacks)
         VitalBoost_MaxHPUp,         // +25% player max HP (stacks)
-        SoftTargeting_EnemyDmgDown, // -20% enemy damage (stacks; optional)
+        SoftTargeting_EnemyDmgDown, // -20% enemy damage (stacks)
 
         // Weapon unlocks (non-stackable)
         Weapon_Rifle,
@@ -56,11 +58,9 @@ public class RollDiceManager : MonoBehaviour
         Ability.SoftTargeting_EnemyDmgDown
     };
 
-    private readonly HashSet<Ability> _unlocked = new HashSet<Ability>();
-
-    void Start()
+    private void Start()
     {
-        if (!weaponManager) weaponManager = FindObjectOfType<WeaponManager>();
+        if (!weaponManager) weaponManager = FindAnyObjectByType<WeaponManager>();
         SyncUnlockedFromFpc();
     }
 
@@ -77,7 +77,7 @@ public class RollDiceManager : MonoBehaviour
         // weapon unlocks start as locked; pistol is default via WeaponManager
     }
 
-    // Called by SelectionCanvas.OnEnable()
+    // Call this from SelectionCanvas.OnEnable() (or right after you show the UI)
     public void OnSelectionCanvasShown(SelectionCanvas canvas)
     {
         if (!canvas) return;
@@ -114,12 +114,20 @@ public class RollDiceManager : MonoBehaviour
                 Ability choice = picks[i];
                 btn.onClick.AddListener(() =>
                 {
+                    // 1) Apply the chosen ability
                     EnableAbility(choice);
 
-                    // Force HUDs that listen to Balance to repaint immediately.
+                    // 2) Force UI/HUD that read from Balance to repaint
                     if (Balance.Instance) Balance.Instance.MarkDirty();
 
+                    // 3) Notify anyone listening
                     OnAbilityChosen?.Invoke();
+
+                    // 4) Authoritatively trigger respawn/unpause
+                    var ph = FindAnyObjectByType<PlayerHealth>(FindObjectsInactive.Include);
+                    if (ph) ph.HandleAbilityChosen();
+
+                    // 5) Close the menu
                     canvas.HideSelf();
                 });
             }

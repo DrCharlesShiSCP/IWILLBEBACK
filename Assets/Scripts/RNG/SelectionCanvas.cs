@@ -34,7 +34,6 @@ public class SelectionCanvas : MonoBehaviour
     public void HideSelf()
     {
         gameObject.SetActive(false);
-
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }

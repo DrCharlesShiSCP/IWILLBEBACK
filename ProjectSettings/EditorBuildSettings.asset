@@ -11,8 +11,11 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Overfort Games/First Person Controller - Advanced/Scenes/TestingStage.unity
     guid: a20cb669f8e316a41b57ef9a6661bc5a
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/DemoSceneLv1.unity
     guid: 504ba33774ba4e340b7d022df549aaeb
+  - enabled: 1
+    path: Assets/Scenes/Neon City.unity
+    guid: df2cede735ba5414293e8602e3ab0fb6
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0

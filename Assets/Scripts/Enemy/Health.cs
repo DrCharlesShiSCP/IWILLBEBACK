@@ -16,6 +16,6 @@ public class Health : MonoBehaviour
     void Die()
     {
         // placeholder ¨C replace with ragdoll, despawn, etc.
-        Destroy(gameObject);
+        //Destroy(gameObject);
     }
 }

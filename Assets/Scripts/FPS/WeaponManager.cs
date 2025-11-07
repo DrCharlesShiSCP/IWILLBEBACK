@@ -1,149 +1,92 @@
-// WeaponManager.cs
 using System.Collections.Generic;
-using System.Reflection;
 using UnityEngine;
 using TMPro;
 
 public class WeaponManager : MonoBehaviour
 {
-    [Header("Active Weapon")]
-    [SerializeField] private HitscanWeapon currentWeapon;
-
     [Header("Setup")]
-    [SerializeField] private Transform weaponParent;              // where weapon GameObjects live (optional; defaults to this.transform)
     [SerializeField] private Camera playerCamera;
-    [SerializeField] private float adsFov = 55f;
+    [SerializeField] private HitscanWeapon currentWeapon;    // reference to the single, persistent weapon component
+    [SerializeField] private AudioSource weaponAudio;        // optional: a dedicated audio source for weapon SFX
 
-    [Header("Defaults")]
-    [SerializeField] private WeaponData defaultWeaponData;        // ¡û assign your Pistol datasheet here
+    [Header("Defaults & UI")]
+    [SerializeField] private WeaponData defaultWeaponData;
+    [SerializeField] private TMP_Text hudText;               // "Pistol 7/12" etc.
+    [SerializeField] private TMP_Text reloadHint;            // "Press R to reload" prompt
 
-    [Header("HUD")]
-    [SerializeField] private TMP_Text ammoHud;                    // drag a TMP Text here
-
-    private readonly List<WeaponData> _owned = new();             // simple inventory of datasheets
+    private readonly List<WeaponData> unlocked = new();
     private float defaultFov;
 
     void Awake()
     {
-        if (playerCamera == null) playerCamera = Camera.main;
-        if (playerCamera) defaultFov = playerCamera.fieldOfView;
-        if (!weaponParent) weaponParent = transform;
+        if (!playerCamera) playerCamera = Camera.main;
+        if (!weaponAudio) weaponAudio = GetComponentInChildren<AudioSource>();
+        if (!currentWeapon)
+        {
+            // If you don't already have a HitscanWeapon on the player, create one once and keep it forever.
+            currentWeapon = gameObject.AddComponent<HitscanWeapon>();
+        }
+        defaultFov = playerCamera ? playerCamera.fieldOfView : 60f;
     }
 
     void Start()
     {
-        // Auto-equip default pistol if nothing active
-        if (!currentWeapon && defaultWeaponData)
-        {
-            AddWeapon(defaultWeaponData, equipNow: true);
-        }
-        else
-        {
-            UpdateHud();
-        }
+        // ensure at least the default exists and is equipped
+        if (defaultWeaponData != null && !unlocked.Contains(defaultWeaponData))
+            unlocked.Add(defaultWeaponData);
+
+        Equip(defaultWeaponData, refillMag: true);
+        UpdateHud();
     }
 
     void Update()
     {
-        if (!currentWeapon) return;
+        // simple input example; adapt to your input system
+        if (Input.GetMouseButton(0)) currentWeapon.TryFire();
 
-        // ADS
-        bool isADS = Input.GetMouseButton(1);
-        currentWeapon.IsADS = isADS;
-        if (playerCamera)
+        // R to reload (and show hint if mag empty)
+        if (currentWeapon != null)
         {
-            playerCamera.fieldOfView = Mathf.Lerp(
-                playerCamera.fieldOfView,
-                isADS ? adsFov : defaultFov,
-                Time.deltaTime * 12f
-            );
+            if (currentWeapon.AmmoInMag <= 0 && reloadHint) reloadHint.text = "Press R to reload";
+            else if (reloadHint) reloadHint.text = "";
+
+            if (Input.GetKeyDown(KeyCode.R))
+                currentWeapon.StartReload();
         }
 
-        // Fire
-        if (currentWeapon.CanHoldToFire())
-        {
-            if (Input.GetMouseButton(0)) currentWeapon.TryFire();
-        }
-        else
-        {
-            if (Input.GetMouseButtonDown(0)) currentWeapon.TryFire();
-        }
-
-        // Reload
-        if (Input.GetKeyDown(KeyCode.R)) currentWeapon.StartReload();
-
-        // HUD
         UpdateHud();
     }
 
-    void UpdateHud()
+    public void AddWeapon(WeaponData data, bool equipNow)
     {
-        if (!ammoHud || !currentWeapon) return;
-
-        var data = currentWeapon.Data;
-
-        // Base display
-        string display = $"{data.weaponName}  {currentWeapon.AmmoInMag}/{data.magazineSize}";
-
-        // Add special states
-        if (currentWeapon.IsReloading)
-        {
-            display = $"{data.weaponName}  (Reloading...)  {currentWeapon.AmmoInMag}/{data.magazineSize}";
-        }
-        else if (currentWeapon.AmmoInMag <= 0)
-        {
-            display += "   <color=#FF4040>Press R to Reload!</color>";
-        }
-
-        ammoHud.text = display;
+        if (data == null) return;
+        if (!unlocked.Contains(data)) unlocked.Add(data);
+        if (equipNow) Equip(data, refillMag: true);
     }
 
-    // ---------- Public API (used by RollDiceManager) ----------
-
-    /// <summary>Adds a WeaponData to inventory; optionally equips immediately.</summary>
-    public void AddWeapon(WeaponData data, bool equipNow = false)
+    public void Equip(WeaponData data, bool refillMag = true)
     {
         if (!data) return;
-        if (!_owned.Contains(data)) _owned.Add(data);
-        if (equipNow) Equip(data);
-    }
+        if (!currentWeapon)
+            currentWeapon = gameObject.AddComponent<HitscanWeapon>();
 
-    /// <summary>Equip by datasheet (spawns a HitscanWeapon child and wires it up).</summary>
-    public void Equip(WeaponData data)
-    {
-        if (!data) return;
+        currentWeapon.BindData(data, playerCamera, weaponAudio, refillMag);
+        // (Optionally) tweak FOV or sensitivity per-weapon using data if you have it
+        if (playerCamera) playerCamera.fieldOfView = defaultFov;
 
-        // destroy old
-        if (currentWeapon) Destroy(currentWeapon.gameObject);
-
-        // spawn new holder
-        var go = new GameObject($"Weapon_{data.name}");
-        go.transform.SetParent(weaponParent, false);
-
-        // components
-        var weapon = go.AddComponent<HitscanWeapon>();
-        var src = go.AddComponent<AudioSource>();
-
-        // Private field injection (keeps your HitscanWeapon unchanged)
-        var flags = BindingFlags.NonPublic | BindingFlags.Instance;
-
-        weapon.GetType().GetField("data", flags)?.SetValue(weapon, data);
-        weapon.GetType().GetField("audioSource", flags)?.SetValue(weapon, src);
-
-        // Camera (if HitscanWeapon's serialized field is private)
-        weapon.GetType().GetField("playerCamera", flags)?.SetValue(weapon, playerCamera);
-
-        currentWeapon = weapon;
         UpdateHud();
     }
 
-    /// <summary>Directly equip an already-instantiated HitscanWeapon.</summary>
-    public void Equip(HitscanWeapon weapon)
+    private void UpdateHud()
     {
-        if (currentWeapon && currentWeapon != weapon)
-            Destroy(currentWeapon.gameObject);
+        if (!hudText || currentWeapon == null) return;
+        hudText.text = $"{currentWeapon.DisplayName}  {currentWeapon.AmmoInMag}/{currentWeapon.MagazineSize}";
+    }
 
-        currentWeapon = weapon;
+    // Call this from your respawn flow after teleport/heal to ensure state is stable
+    public void OnPlayerRespawned()
+    {
+        // nothing to recreate¡ªcomponent persists. Just refresh HUD in case UI was rebuilt.
         UpdateHud();
     }
 }

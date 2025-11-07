@@ -17,7 +17,9 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 
     private RollDiceManager manager;
     private CharacterController cc;
+    private Health enemyHealth;
 
+    public static event System.Action OnPlayerRespawned;
     void Awake()
     {
         cc = GetComponent<CharacterController>();
@@ -34,7 +36,6 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         // currentHealth = maxHealth;
         UpdateHealthUI();
         UpdateDeathUI();
-
         manager = Object.FindAnyObjectByType<RollDiceManager>();
         if (manager != null)
         {
@@ -76,7 +77,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         else Debug.LogWarning("PlayerHealth: No RollDiceManager to show selection UI.");
     }
 
-    private void HandleAbilityChosen()
+    public void HandleAbilityChosen()
     {
         // Teleport to respawn and fully heal
         if (respawnPoint != null)
@@ -94,9 +95,11 @@ public class PlayerHealth : MonoBehaviour, IDamageable
             Debug.LogWarning("PlayerHealth: RespawnPoint not assigned. Staying in place.");
         }
 
-        currentHealth = EffectiveMaxHealth();  // full heal to scaled max
+        currentHealth = EffectiveMaxHealth();
+
         UpdateHealthUI();
         Time.timeScale = 1f;
+        OnPlayerRespawned?.Invoke();
     }
 
     private void UpdateHealthUI()
