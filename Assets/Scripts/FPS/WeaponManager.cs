@@ -8,10 +8,12 @@ public class WeaponManager : MonoBehaviour
     [SerializeField] private Camera playerCamera;
     [SerializeField] private HitscanWeapon currentWeapon;    // reference to the single, persistent weapon component
     [SerializeField] private AudioSource weaponAudio;        // optional: a dedicated audio source for weapon SFX
+    private HitscanWeapon Hitscanweapon;
 
     [Header("Defaults & UI")]
     [SerializeField] private WeaponData defaultWeaponData;
-    [SerializeField] private TMP_Text hudText;               // "Pistol 7/12" etc.
+    [SerializeField] private TMP_Text hudText;
+    [SerializeField] private GameObject hinttext;// "Pistol 7/12" etc.
     [SerializeField] private TMP_Text reloadHint;            // "Press R to reload" prompt
 
     private readonly List<WeaponData> unlocked = new();
@@ -47,11 +49,23 @@ public class WeaponManager : MonoBehaviour
         // R to reload (and show hint if mag empty)
         if (currentWeapon != null)
         {
-            if (currentWeapon.AmmoInMag <= 0 && reloadHint) reloadHint.text = "Press R to reload";
-            else if (reloadHint) reloadHint.text = "";
+            Debug.Log("Ammo in mag: " + currentWeapon.AmmoInMag);
+
+            if (currentWeapon.AmmoInMag <= 0 && reloadHint)
+            {
+                Debug.Log("Showing reload hint");
+                hinttext.SetActive(true);
+                reloadHint.text = "Press R to reload";
+            }
+            else if (reloadHint)
+            {
+                reloadHint.text = "";
+            }
 
             if (Input.GetKeyDown(KeyCode.R))
+            {
                 currentWeapon.StartReload();
+            }
         }
 
         UpdateHud();
@@ -86,7 +100,9 @@ public class WeaponManager : MonoBehaviour
     // Call this from your respawn flow after teleport/heal to ensure state is stable
     public void OnPlayerRespawned()
     {
+        Hitscanweapon = FindAnyObjectByType<HitscanWeapon>();
         // nothing to recreate¡ªcomponent persists. Just refresh HUD in case UI was rebuilt.
         UpdateHud();
+        Hitscanweapon.CancelReload();
     }
 }

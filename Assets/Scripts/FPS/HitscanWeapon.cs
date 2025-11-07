@@ -8,6 +8,7 @@ public class HitscanWeapon : MonoBehaviour
     [SerializeField] private WeaponData data;           // bound at runtime by BindData
     [SerializeField] private Camera playerCamera;       // set by WeaponManager or fallback to Camera.main
     [SerializeField] private AudioSource audioSource;   // local audio source
+    [SerializeField] private GameObject ReloadHint;
 
     public int AmmoInMag { get; private set; }
     private float nextFireTime;
@@ -78,16 +79,29 @@ public class HitscanWeapon : MonoBehaviour
     public void StartReload()
     {
         if (!data || IsReloading) return;
-        if (AmmoInMag >= data.magazineSize) return;
+        //if (AmmoInMag >= data.magazineSize) return;
         StartCoroutine(Co_Reload());
     }
 
     private IEnumerator Co_Reload()
     {
+        Debug.Log("Reloading...");
         IsReloading = true;
         if (data.reloadSfx && audioSource) audioSource.PlayOneShot(data.reloadSfx);
-        yield return new WaitForSeconds(data.reloadTime);
+        float t = 0f;
+        while (t < data.reloadTime)
+        {
+            t += Time.unscaledDeltaTime;
+            yield return null;
+        }
         AmmoInMag = data.magazineSize;
+        Debug.Log("Reload complete.");
+        ReloadHint.SetActive(false);
+        IsReloading = false;
+    }
+    public void CancelReload()
+    {
+        StopAllCoroutines();
         IsReloading = false;
     }
 }

@@ -101,6 +101,8 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 
         currentHealth = EffectiveMaxHealth();
 
+        FindAnyObjectByType<HealthTracker>().ReactivateAllHealthObjects();
+
         UpdateHealthUI();
         Time.timeScale = 1f;
         OnPlayerRespawned?.Invoke();

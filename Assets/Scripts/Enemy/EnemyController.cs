@@ -150,6 +150,7 @@ public class EnemyController : MonoBehaviour, IDamageable
     {
         // disable (not destroy) so EnemyResetManager can bring it back
         gameObject.SetActive(false);
+        _currentHealth = _maxHealth;
     }
 
 #if UNITY_EDITOR

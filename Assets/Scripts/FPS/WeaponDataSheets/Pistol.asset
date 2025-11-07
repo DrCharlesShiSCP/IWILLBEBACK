@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: Pistol
   damage: 15
-  range: 50
+  range: 25
   fireRate: 3
   automatic: 0
   spreadHip: 1.5

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: FastEnemy
   m_EditorClassIdentifier: 
   maxHealth: 10
-  attackRange: 20
+  attackRange: 30
   shotsPerSecond: 10
   projectileSpeed: 20
   projectileDamage: 1

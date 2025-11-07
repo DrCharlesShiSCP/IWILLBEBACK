@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: SMG
   damage: 12
-  range: 50
+  range: 25
   fireRate: 20
   automatic: 1
   spreadHip: 1.5

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: TestingEnemy
   m_EditorClassIdentifier: 
   maxHealth: 100
-  attackRange: 30
+  attackRange: 40
   shotsPerSecond: 1
   projectileSpeed: 15
   projectileDamage: 20
