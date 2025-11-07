@@ -18,10 +18,13 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     private RollDiceManager manager;
     private CharacterController cc;
     private Health enemyHealth;
+    public AudioSource audioSource;
+    public AudioClip deathClip;
 
     public static event System.Action OnPlayerRespawned;
     void Awake()
     {
+        audioSource = FindAnyObjectByType<AudioSource>();
         cc = GetComponent<CharacterController>();
     }
     private float EffectiveMaxHealth()
@@ -80,6 +83,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     public void HandleAbilityChosen()
     {
         // Teleport to respawn and fully heal
+        audioSource.PlayOneShot(deathClip);
         if (respawnPoint != null)
         {
             bool wasEnabled = cc && cc.enabled;

@@ -16,6 +16,7 @@ namespace OverfortGames.FirstPersonController
 
         public GameObject settingsPanel;
 
+        public GameObject SelectionMenu;
 
         public Slider mouseSensitivitySlider;
         public TMP_InputField mouseSensitivityInputField;
@@ -97,7 +98,7 @@ namespace OverfortGames.FirstPersonController
 
         private void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Escape))
+            if (Input.GetKeyDown(KeyCode.Escape) && !SelectionMenu.activeSelf)
             {
                 if (optionsPanel.activeSelf)
                 {
